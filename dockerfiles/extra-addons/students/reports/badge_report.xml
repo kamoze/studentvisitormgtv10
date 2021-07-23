@@ -1,0 +1,90 @@
+<openerp>
+    <data>
+
+        <report
+        id="student_report_badge"
+        model="visitor.contract"
+        string="Badge Report"
+        name="students.badge_report"
+        file="students.badge_report"
+        report_type="qweb-pdf" />
+
+
+        <template id="badge_report">
+                <t t-call="report.html_container">
+                    <t t-foreach="docs" t-as="doc">
+                <!--        <t t-call="report.external_layout"> -->
+                            <div class="page">
+                             <!--   <div class="well"> -->
+				 <h1 class="text-center" style="font-size:15px; color:red;"> <strong>CONTRACTOR PASS - <span t-field="doc.sequence_number"/></strong> </h1>                             
+                                        <table class="table .table-striped">
+                <!--                                     <tr>
+                                                         <td >
+                                                            <img class="text-left" t-if="doc.image" t-att-src="'data:image/png;base64,%s' % doc.image" style="max-height:4cm; max-width:7cm;"/>
+                                                             <td></td> <td></td>
+                                                      <td style="text-align: right; padding-right:10px">
+                                                                <img class="text-left" t-if="doc.barcode" t-att-src="'data:image/png;base64,%s' % doc.barcode" style="max-height:6cm; max-width:8m;"/>
+                                                      </td>
+                                                         </td>
+                                                     </tr>  -->
+					<tr style="font-size:22px;">
+                                            <td>
+                                            <img class="text-left" t-if="doc.image" t-att-src="'data:image/png;base64,%s' % doc.image" style="max-height:2cm; max-width:2cm;"/></td>
+                                           <td><strong><span t-field="doc.contractor_name_id"/><br/><span style="font-size:15px; color:red;" t-field="doc.company_name_id"/></strong>
+                                        </td>
+                                        <td style="font-size:65px; color:red;"><strong>(C)</strong></td>
+                                         <td><strong></strong></td>
+                                     </tr>
+		
+					 <tr style="font-size:9px;">
+                                            <td><strong>Project:</strong><br/><strong>Location:</strong></td>
+                                           <td t-foreach="doc.badge_ids" t-as="l"><span t-field="doc.project_type_id"/><br/><strong><span style="font-size:9px; color:red;" t-field="l.work_location_id.name"/></strong></td>
+                                            <td><strong>Proj Mgr: </strong><span t-field="doc.project_type_id.user_id"/><br/><strong>Time-In: </strong><strong><i><span style="font-size:5px; color:red;" t-field="doc.check_in"/></i></strong></td>
+                                        </tr>
+				    </table>
+                                        <table class="table .table-striped">
+ 
+				    <tr>
+                                        <h1 class="text-center" style="font-size:5px; color:red;"><strong>PIN:<span t-field="doc.pin"/></strong><br/><img class="text-center" t-if="doc.barcode" t-att-src="'data:image/png;base64,%s' % doc.barcode"
+ style="max-height:6cm; max-width:8m;"/></h1>
+                                      </tr>
+                                           <!--     <tr>
+
+                                                    <td><strong>Badge</strong></td>
+
+                                                     <td t-foreach="doc.badge_ids" t-as="l">
+                                                       <span t-field="l.work_location_id.name"/>
+                                                   </td>
+                                                    <td><strong>Project Type</strong></td>
+                                                     <td><span t-field="doc.project_type_id"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Contractor Name</strong></td>
+                                                     <td><span t-field="doc.contractor_name_id"/></td>
+                                                    <td><strong>Company Name</strong></td>
+                                                     <td><span t-field="doc.company_name_id"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Barcode Number</strong></td>
+                                                     <td><span t-field="doc.barcode_number"/></td>
+                                                    <td><strong>Pin</strong></td>
+                                                     <td><span t-field="doc.pin"/></td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><strong>Check In</strong></td>
+                                                      <td><span t-field="doc.check_in"/></td>
+                                                    <td><strong>Check Out</strong></td>
+                                                       <td><span t-field="doc.check_out"/></td>
+
+                                                </tr> -->
+                                                </table>
+
+
+                                        </div>
+                         <!--  </div> -->
+                        </t>
+                   <!-- </t>  -->
+                </t>
+        </template>
+    </data>
+</openerp>

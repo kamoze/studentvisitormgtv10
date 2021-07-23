@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="child_information_form" model="ir.ui.view">
+            <field name="name">child.type.form</field>
+            <field name="model">child.type</field>
+            <field name="arch" type="xml">
+                <form string="My test First">
+                    <sheet>
+                        <group>
+                             <field name="Name"/>
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+          <record id="child_information_tree" model="ir.ui.view">
+            <field name="name">child.type.tree</field>
+            <field name="model">child.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="Name"/>
+                  </tree>
+            </field>
+          </record>
+        <record id="action_child_information" model="ir.actions.act_window">
+            <field name="name">child.type</field>
+            <field name="res_model">child.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id ="menu_sub_parent" parent = "visitor_school_menu2" sequence ="2" name ="Child" action="action_child_information"/>
+    </data>
+</odoo>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+         <record id="visitor_mail_template" model="mail.template">
+            <field name="name">Visitor Mail</field>
+            <field name="subject">Visitor Mail Notification</field>
+            <field name="model_id" ref="model_hr_visitor"/>
+            <!--<field name="email_from"> ${object.name|safe}</field>-->
+            <field name="email_to"> ${object.partner_id.email}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="sms_body"><![CDATA[
+                <p>Hello,${object.visitor_name}</p>
+                <p>
+                We are glad to inform you about the visitor meeting
+                </p>
+
+                ]]></field>
+        </record>
+
+
+        <record id="visitor_mail_for_confirm_template" model="mail.template">
+            <field name="name">Visitor Confirm Mail</field>
+            <field name="subject">Visitor Confirmation Notification</field>
+            <field name="model_id" ref="model_hr_visitor"/>
+            <field name="email_to"> ${object.email}</field>
+             <field name="report_template" ref="hr_visitor.visitor_process_report"/>
+
+            <field name="auto_delete" eval="True"/>
+            <field name="sms_body"><![CDATA[
+                 % if object.user_type == 'new'
+                    <p>Hello,${object.visitor_name}</p>
+                 %endif
+                  % if object.user_type == 'user'
+                     <p>Hello,${object.visitor_name_id.name}</p>
+                  %endif
+                <p>
+                    We are glad to inform you that you visit is confirm againt visitor <b>${object.partner_id.name}</b>
+                </p>
+                <p>
+
+                    <b>
+                            Barcode Number : ${object.barcode_number}
+                    </b>
+                 </p>
+                 <p>
+
+                    <b>
+                            Pin : ${object.pin}
+                    </b>
+                 </p>
+
+                ]]></field>
+        </record>
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+<openerp>
+    <data noupdate="1">
+         <record id="visitor_user" model="res.groups">
+            <field name="name">Visitor User</field>
+        </record>
+        <record id="visitor_employee" model="res.groups">
+            <field name="name">Visitor Employee</field>
+        </record>
+          <record id="visitor_admin" model="res.groups">
+            <field name="name">Visitor Admin</field>
+        </record>
+
+        <record id="hr_visitor_record" model="ir.rule">
+            <field name="name">User Visitor</field>
+            <field name="model_id" ref="model_hr_visitor"/>
+            <field name="groups" eval="[(4,ref('visitor_user'))]"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+        </record>
+
+        <record id="visitor_partner_rule" model="ir.rule">
+            <field name="name">Visitor Partner </field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('visitor_user')),(4, ref('visitor_employee'))]"/>
+        </record>
+
+         <record id="hr_employee_record_rule" model="ir.rule">
+            <field name="name">Employee Visitor</field>
+            <field name="model_id" ref="model_hr_visitor"/>
+            <field name="groups" eval="[(4,ref('visitor_employee'))]"/>
+            <field name="domain_force">['|', ('user_id','=',user.id), ('partner_id.user_id','=',user.id)]</field>
+        </record>
+
+
+
+
+    </data>
+</openerp>

@@ -1,0 +1,72 @@
+<openerp>
+<data>
+    <report
+        id="visitor_badge_report"
+        model="hr.visitor"
+        string="Badge Report"
+        name="hr_visitor.report_badge"
+        file="hr_visitor.report_badge"
+        report_type="qweb-pdf" />
+
+    <template id="report_badge">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+              <!--  <t t-call="report.internal_layout"> -->
+                 <div class="page">
+                       <!-- <div class="well">-->
+                        <h1 class="text-center" style="font-size:15px; color:red;"> <strong>VISITOR PASS - <span t-field="doc.name"/></strong> </h1>
+                                <table class="table .table-striped">
+
+                                      <tr style="font-size:22px;">
+                                            <td>
+                                            <img class="text-left" t-if="doc.image" t-att-src="'data:image/png;base64,%s' % doc.image" style="max-height:2cm; max-width:2cm;"/></td>
+					   <td><strong><span t-field="doc.visitor_name"/><br/><span style="font-size:15px; color:red;" t-field="doc.visitor_company_id"/></strong>
+					</td>
+					<td style="font-size:65px; color:red;"><strong>(V)</strong></td>
+					 <td><strong></strong></td>
+				     </tr>
+
+					<tr style="font-size:9px;">
+                                            <td><strong>Visiting:</strong><br/><strong>Access:</strong></td>
+					   <td><span t-field="doc.partner_id"/><br/><strong><span style="font-size:9px; color:red;" t-field="doc.department_id.building_location"/></strong></td> 
+                                            <td><strong>Dept: </strong><span t-field="doc.department_id"/><br/><strong>Time-In: </strong><strong><i><span style="font-size:5px; color:red;" t-field="doc.in_datetime"/></i></strong></td>
+                                        </tr>
+<!--
+					<tr style="font-size:7px;">
+                                            <td><strong>Access Level:</strong></td>
+						<td><strong><span t-field="doc.department_id.building_location"/></strong></td>
+                                            <td><strong>Sign:</strong><img class="text-left" t-if="doc.signature" t-att-src="'data:image/png;base64,%s' % doc.signature" style="max-height:2cm; max-width:4cm;"/><br/>
+						<i><span style="font-size:5px; color:red;" t-field="doc.in_datetime"/></i></td>
+					 </tr>
+-->
+                                        <!--<tr>
+                                            <td><strong>Phone/Mobile:</strong></td>
+                                            <td><span t-field="doc.mobile_number"/></td>
+                                            <td><strong>Email:</strong></td>
+                                            <td><span t-field="doc.email"/></td>
+
+                                        </tr>-->
+
+					<!--<tr style="font-size:10px;">
+					<td><strong></strong></td>
+	                                   <td><strong>PIN:<span t-field="doc.pin"/></strong><br/><img class="text-right" t-if="doc.barcode" t-att-src="'data:image/png;base64,%s' % doc.barcode" style="max-height:4cm; max-width:15cm;"/></td>
+					<td><strong></strong></td>
+					</tr>-->
+					<!--<tr>
+					   <td style="font-size:10px;"><strong>PIN:<span t-field="doc.pin"/></strong></td>
+					</tr>-->
+                                        </table>
+					<table class="table .table-striped">
+                                      <tr> 
+		   			<h1 class="text-center" style="font-size:5px; color:red;"><strong>PIN:<span t-field="doc.pin"/></strong><br/><img class="text-right" t-if="doc.barcode" t-att-src="'data:image/png;base64,%s' % doc.barcode" style="max-height:4cm; max-width:15cm;"/></h1>
+				      </tr>
+					</table>
+					
+                              </div> 
+             <!--   </div>   -->
+                </t>
+<!--            </t> -->
+        </t>
+    </template>
+</data>
+</openerp>

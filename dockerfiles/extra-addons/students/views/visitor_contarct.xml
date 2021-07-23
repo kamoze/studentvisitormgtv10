@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="visitor_contract_form_view" model="ir.ui.view">
+            <field name="name">visitor.contract.form</field>
+            <field name="model">visitor.contract</field>
+            <field name="arch" type="xml">
+               <form string="Visitor Contract">
+
+                <header>
+                    <button string="Print Badge" type="object" name="print_badge" class="oe_highlight"/>
+                    <button string="Generate Pin" type="object" name="pin_generate" class="oe_highlight"/>
+                    <button string="CONFIRM" type="object" name="action_confirm" states="draft" class="oe_highlight"/>
+                    <button string="CHECK IN" type="object" name="action_confirm_check_in" states="confirm" class="oe_highlight"/>
+                    <button string="CHECK OUT" name="action_confirm_check_out" class="oe_highlight" states="check_in" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,check_in,check_out" />
+                </header>
+
+                    <sheet >
+                         <h1><field name="sequence_number" readonly="1"/></h1>
+                         <h1><field name="image" widget="image"/></h1>
+                        <group>
+                            <h1><field name="barcode" widget='image' attrs="{'invisible':[('state','=','draft')]}"/></h1>
+                        </group>
+                        <group>
+                        <group>
+                             <field name="badge_ids" widget="many2many_tags"/>
+                             <field name="project_type_id"/>
+                             <field name="check_in" readonly="1"/>
+                             <field name="barcode_number" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="contractor_name_id" domain="[('supplier', '=', True)]"/>
+                            <field name="company_name_id"/>
+                            <field name="check_out" readonly="1"/>
+                            <field name="pin" readonly="1"/>
+                            <field name ="user_id"/>
+
+                       </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+          <record id="visitor_contract_tree_view" model="ir.ui.view">
+            <field name="name">visitor.contract.tree</field>
+            <field name="model">visitor.contract</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence_number"/>
+                     <field name="check_in"/>
+                     <field name="check_out"/>
+                    <field name="contractor_name_id"/>
+                    <field name="company_name_id"/>
+                  </tree>
+            </field>
+          </record>
+
+        <record id="project_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                 <field name="project_team_member_ids" widget="many2many_tags"/>
+                  <group>
+                      <field name="project_start_date"/>
+                  </group>
+                  <group>
+                      <field name="estimate_end_date"/>
+                </group>
+
+            </xpath>
+        </field>
+      </record>
+        <record id="sequence_number_id" model="ir.sequence">
+            <field name="name">>visitor.contract.form</field>
+            <field name="code">>visitor.contract</field>
+            <field name="prefix">CON-</field>
+            <field name="padding">4</field>
+        </record>
+
+
+        <record id="visitor_contract_view_kanban_view" model="ir.ui.view">
+        <field name="name">visitor.contract.kanban</field>
+        <field name="model">visitor.contract</field>
+        <field name="arch" type="xml">
+            <kanban class="o_hr_employee_attendance_kanban" create="false">
+                <templates>
+                    <t t-name="kanban-box">
+
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('visitor.contract', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <div id="textbox">
+                                  <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="sequence_number"/>
+                                    </strong>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="contractor_name_id"/>
+                                    </strong>
+                                </div>
+                                  <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="company_name_id"/>
+                                    </strong>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                   <strong>
+                                      <field name="barcode_number"/>
+                                   </strong>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                        <field name="check_in"/>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                        <field name="check_out"/>
+                                </div>
+                                 <div class="col-xs-11" style="padding:0px">
+                                        <field name="pin"/>
+                                </div>
+                                  <div class="col-xs-11" style="padding:0px">
+                                        <field name="state"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+        <record id="action_contract_visitor" model="ir.actions.act_window">
+            <field name="name">Contractor</field>
+            <field name="res_model">visitor.contract</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <menuitem id="visitor_contract" web_icon="students,static/description/icon.png" groups="base.group_user" name="Contractor "  sequence="1"/>
+         <menuitem id="visitor_contract_sub_menu" name="Contractor " parent="visitor_contract" sequence="1"/>
+        <menuitem id="visitor_contract_menu" action="action_contract_visitor" parent="visitor_contract_sub_menu" sequence="2"/>
+    </data>
+</odoo>

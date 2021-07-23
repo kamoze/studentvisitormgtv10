@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="visitor_form_view" model="ir.ui.view">
+            <field name="name">visitor.student.form</field>
+            <field name="model">visitor.student</field>
+            <field name="arch" type="xml">
+            <form string="Visitor Form">
+
+                <header>
+                    <button string="Generate Pin" type="object" name="pin_generate" class="oe_highlight"/>
+                </header>
+                    <sheet>
+                        <group>
+                            <field name="image" widget ='image' options='{"size": [90, 90]}'/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="class_id"/>
+                                <field name="school_id"/>
+                            </group>
+                            <group>
+                                <field name="arm"/>
+                                <field name="pin" readonly="1"/>
+                                <field name="date_of_entry"/>
+                            </group>
+                        </group>
+                            <group>
+                                 <field name="student_ids" widget="many2many_tags"/>
+                            </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="visitor_student_tree_view" model="ir.ui.view">
+            <field name="name">visitor.student.tree</field>
+            <field name="model">visitor.student</field>
+            <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+                  <field name="arm"/>
+                  <field name="pin"/>
+                  <field name="date_of_entry"/>
+              </tree>
+            </field>
+        </record>
+
+        <record id="visitor_student_view_kanban_view" model="ir.ui.view">
+        <field name="name">visitor.student.kanban</field>
+        <field name="model">visitor.student</field>
+        <field name="arch" type="xml">
+            <kanban class="o_hr_employee_attendance_kanban" create="false">
+                <templates>
+                    <t t-name="kanban-box">
+
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('visitor.student', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <div id="textbox">
+                                <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div class="col-xs-19" style="padding:0px">
+                                   <strong>
+                                      <field name="pin"/>
+                                   </strong>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                        <field name="date_of_entry"/>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                        <field name="class_id"/>
+                                </div>
+                                 <div class="col-xs-11" style="padding:0px">
+                                        <field name="school_id"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+
+        <record model="ir.actions.act_window" id="visitor_student_action">
+            <field name="name">Student Information</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">visitor.student</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <menuitem id="visitor_menu1" name="Student " web_icon="students,static/description/icon2.png" groups="base.group_user" sequence="1"/>
+        <menuitem id="visitor_menu2" name="Student" sequence="1" parent="visitor_menu1"/>
+        <menuitem id="visitor_menu3" action="visitor_student_action" parent="visitor_menu2" sequence="1"/>
+
+    </data>
+</odoo>

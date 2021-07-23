@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="visitor_location_form" model="ir.ui.view">
+            <field name="name">visitor.location.form</field>
+            <field name="model">visitor.location</field>
+            <field name="arch" type="xml">
+                <form string="Visitor  Location">
+                    <sheet>
+                        <group>
+                             <field name="name"/>
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+          <record id="visitor_location_tree" model="ir.ui.view">
+            <field name="name">visitor.location.tree</field>
+            <field name="model">visitor.location</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                  </tree>
+            </field>
+          </record>
+        <record id="action_location_visitor" model="ir.actions.act_window">
+            <field name="name">Location</field>
+            <field name="res_model">visitor.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id ="menu_visit_location" parent = "visitor_badge_menu2" sequence ="2" name =" Work Location" action="action_location_visitor"/>
+    </data>
+</odoo>

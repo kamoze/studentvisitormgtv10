@@ -1,0 +1,73 @@
+<openerp>
+    <data>
+
+        <report
+        id="student_visitor_report"
+        model="hr.visitor"
+        string="Student Report"
+        name="hr_visitor.student_report"
+        file="hr_visitor.student_report"
+        report_type="qweb-pdf" />
+
+
+        <template id="student_report">
+                <t t-call="report.html_container">
+                    <t t-foreach="docs" t-as="doc">
+<!--                        <t t-call="report.internal_layout"> -->
+                            <div class="page">
+                               <!-- <div class="well">  -->
+				<img class="text-center"  src="http://www.spantreeng.com/logo.png" style="max-height:3cm; max-width:4cm;"/>
+				<h2 class="text-center" style="color:red;"><strong>Student Pass</strong></h2>
+                               <!-- <p><h2><span t-field="doc.name"/></h2></p> -->
+                                        <table class="table .table-striped" style="font-size:12px;">
+			
+                                                <td >
+                                                         <img class="text-center" t-if="doc.student_name.image" t-att-src="'data:image/png;base64,%s' % doc.student_name.image" style="max-height:4cm; max-width:5cm;"/>
+                                                </td>
+
+                                                <tr>
+                                                    <td><strong>Student Name:</strong>
+                                                    <span t-field="doc.student_name.name"/></td>
+                                                 </tr>
+						<tr>
+						   <td><strong>Arm:</strong>
+                                                    <span t-field="doc.student_name.arm"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Class:</strong>
+                                                    <span t-field="doc.student_name.class_id.name"/></td>
+                                                </tr>
+						<tr>   
+						    <td><strong>School:</strong>
+                                                    <span t-field="doc.student_name.school_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Date of Pickup:</strong>
+                                                <!--   <span t-field="doc.student_name.date_of_entry"/>-->
+							<span t-field="doc.out_datetime"/></td>
+                                                </tr>
+					<!--	<tr>    
+						    <td><strong>Pin</strong></td>
+                                                    <td ><span t-field="doc.student_name.pin"/></td>
+                                                </tr> -->
+                                               <tr>
+                                                    <td t-foreach="doc.student_name.student_ids" t-as="l">
+                                                       <strong>Parent:</strong> <span t-field="l.name"/>
+                                                   </td>
+                                                </tr>
+					
+						<tr>
+                                                    <td><br/><br/><br/><strong>..........................</strong><br/>
+                                                        <strong>Teacher Sign-off</strong></td>
+                                                </tr>
+                                                </table>
+
+
+                                        </div>
+                         <!--  </div> -->
+                     <!--   </t> -->
+                    </t>
+                </t>
+        </template>
+    </data>
+</openerp>

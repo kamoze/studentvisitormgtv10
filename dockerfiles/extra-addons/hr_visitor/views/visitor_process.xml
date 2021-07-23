@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="visitor_form_view">
+            <field name="name">Visitor Form</field>
+            <field name="model">hr.visitor</field>
+            <field name="arch" type="xml">
+                <form string="Visitor Form">
+                    <header>
+                        <button string="Print Badage" type="object" states="confirm" class="btn btn-info" name="print_visitor_card" />
+                        <button string="Confirm" type="object" name="action_confirm"
+                                states="draft" class="oe_highlight" groups="hr_visitor.visitor_employee,hr_visitor.visitor_admin"/>
+                        <button string="Cancel" type="object" name="action_cancel"
+                                states="draft" class="oe_highlight" groups="hr_visitor.visitor_employee,hr_visitor.visitor_admin"/>
+                        <button string="Check In" type="object" name="action_check_in"
+                                states="confirm" class="oe_highlight" groups="hr_visitor.visitor_admin"/>
+                         <button string="Check Out" type="object" name="action_check_out"
+                                states="check_in" class="oe_highlight" groups="hr_visitor.visitor_admin"/>
+                        <button string="Reset To Draft" type="object" name="action_reset_to_draft"
+                                states="exit" groups="hr_visitor.visitor_admin"/>
+                        <button string="Exit" type="object" name="action_exit"
+                                states="check_out" class="oe_highlight" groups="hr_visitor.visitor_admin"/>
+                         <button string="Send Email" type="object" name="action_email_button"
+                                states="draft, confirm, check_in, check_out" class="oe_highlight" groups="hr_visitor.visitor_admin"/>
+                         <button string="Send SMS" type="object" name="action_sms_button"
+                                states="draft, confirm, check_in, check_out" class="oe_highlight" groups="hr_visitor.visitor_admin"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft, confirm, check_in, check_out,exit"/>
+                    </header>
+                    <sheet>
+                            <h1><field name="name" readonly="1"/></h1>
+                            <h1><field name="image" widget='image' class="oe_left oe_avatar" /></h1>
+                        <h1><field name="barcode" widget='image' attrs="{'invisible':['|',('state','in', 'draft'), ('visit_type','!=','emp')]}"/></h1>
+                            <group string="Visitor Information">
+                                <group>
+                                    <field name="visit_type" required="1"/>
+                                    <field name="user_type" required="1"/>
+                                    <field name="visitor_name_id" attrs="{'invisible':[('user_type','!=','user')],
+                                                                          }" domain="[('visitor_check', '=', True)]" widget="selection"/>
+                                    <field name="visitor_name" placeholder="Visitor Name..." attrs="{'readonly':[('state','in',['confirm','exit','cancel'])],
+                                                                                                      'invisible':[('user_type','=', 'user')],
+                                                                                                       }"/>
+                                    <field name="mobile_number" placeholder="Contact Number..." attrs="{'readonly':['|',('state','in',['exit','cancel'])]}"/>
+                                </group>
+                                <group>
+                                    <field name="visitor_company_id" placeholder="Company Name..." attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])]}"/>
+                                    <field name="email" placeholder="E mail..." attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])]}"/>
+                                </group>
+                            </group>
+                               <header>
+                                  <button string="Official" type="object" name="action_official_button" class="oe_highlight" />⁣&#x2063;
+                                  <button string="Students Pick Up" type="object" name="action_pick_up_button" class="oe_highlight"/>⁣&#x2063;
+                                  <button string="Visitor Relative" type="object" name="action_visitor_rel_button" class="oe_highlight"/>&#x2063;
+                               </header>
+                                <group>
+                                  <field name="purpose" placeholder="Purpose..." attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])],
+                                  'invisible':[('check','!=', True)]}"/>
+                               </group>
+                            <group>
+                                <group string="In Out Details">
+                                    <field name="in_datetime" placeholder="In Time.."  readonly="1"/>
+                                    <field name="out_datetime" placeholder="Out Time..." readonly="1"/>
+                                    <field name="barcode_number"  attrs="{'invisible':[('state','in', 'draft')]}"/>
+                                    <label for="student_name" string="Student Name" attrs="{'invisible':[('visit_type','=','emp')]}"/>
+                                    <field name="check" invisible="1"/>
+                                    <div class="address_format">
+                                         <field name="student_name" style="width: 33%" />
+                                         <button name="print_button" type="object" string="Print Student Badage" class="btn btn-info" style="width: 60%"
+                                                 attrs="{'invisible':[('check','!=', True)]}"/>
+                                    </div>
+
+
+                                    <field name="pin" readonly="0" attrs="{'readonly':[('visit_type','=','emp')]}"/>
+                                    <field name="visitor_state" invisible="1"/>
+                                    <field name="check" invisible="1"/>
+                                </group>
+
+                                <group string="Contact Information">
+                                    <field name="partner_id" placeholder="Contact Person Name..."
+                                           attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])],
+                                                   'invisible':[('visit_type','=','stu')], 'required': [('visit_type', '!=', 'stu')]}"/>
+                                    <field name="department_id"  placeholder="Department..."
+                                           attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])],
+                                                   'invisible':[('visit_type','=','stu')],
+                                                   'required': [('visit_type', '!=', 'stu')]}"/>
+                                    <field name="user_id" placeholder="Created By..." attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])]}" readonly="1"/>
+                                    <field name="company_id" placeholder="Company..." attrs="{'readonly':['|',('state','in',['confirm','exit','cancel'])]}" readonly="1"/>
+                                </group>
+                            <group colspan="4">
+                                    <field name="signature" widget="signature"/>
+                                     </group>
+                            </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="visitor_process_list" model="ir.ui.view">
+            <field name="name">Visitor list</field>
+            <field name="model">hr.visitor</field>
+                <field name="arch" type="xml">
+                    <tree string="Visitor Process">
+                        <field name="name"/>
+                        <field name="visitor_name"/>
+                        <field name="mobile_number"/>
+                        <field name="email"/>
+                        <field name="in_datetime"/>
+                        <field name="out_datetime"/>
+                        <field name="partner_id"/>
+                        <field name="department_id"/>
+                        <field name="company_id"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+                  </tree>
+                </field>
+        </record>
+
+        <record model="ir.ui.view" id="visitor_process_search_view">
+            <field name="name">Visitor Search</field>
+            <field name="model">hr.visitor</field>
+                <field name="arch" type="xml">
+                    <search>
+                        <field name="visitor_name"/>
+                        <field name="partner_id"/>
+                        <field name="in_datetime"/>
+                        <field name="out_datetime"/>
+                        <field name="department_id"/>
+                        <field name="company_id"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+                        <group string="Group By">
+                            <filter name="by_visitor_name" string="Visitor"
+                                    context="{'group_by': 'visitor_name'}"/>
+                            <filter name="by_patnar_id" string="Employee"
+                                    context="{'group_by': 'partner_id'}"/>
+                            <filter name="by_visitor_user" string="User"
+                                    context="{'group_by': 'user_id'}"/>
+                            <filter name="by_visitor_state" string="State"
+                                    context="{'group_by': 'state'}"/>
+                            <filter name="by_visitor_department" string="Department"
+                                    context="{'group_by': 'department_id'}"/>
+                            <filter name="by_visitor_in" string="Date Time In"
+                                    context="{'group_by': 'in_datetime'}"/>
+                            <filter name="by_visitor_out" string="Date Time Out"
+                                    context="{'group_by': 'out_datetime'}"/>
+                        </group>
+                    </search>
+                </field>
+        </record>
+
+         <record id="view_partner_simple_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.simplified.form</field>
+            <field name="model">res.partner</field>
+           <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mobile']" position="after">
+                   <field name="visitor_check" invisible="1"/>
+                </xpath>
+                  <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="visitor_meeting" icon="fa-calendar">
+                            <field string="Visitor" name="visitor_count" widget="statinfo"/>
+                        </button>
+                  </div>
+            </field>
+        </record>
+
+         <record id="view_department_form" model="ir.ui.view">
+            <field name="name">hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                   <field name="building_location" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="email_template_form_inherit">
+            <field name="name">email.template.form</field>
+            <field name="model">mail.template</field>
+             <field name="inherit_id" ref="mail.email_template_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='model_id']" position="after">
+                   <field name="sms_body" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_visitor_view_kanban_view" model="ir.ui.view">
+        <field name="name">hr.visitor.kanban</field>
+        <field name="model">hr.visitor</field>
+        <field name="arch" type="xml">
+            <kanban class="o_hr_employee_attendance_kanban" create="false">
+                <templates>
+                    <t t-name="kanban-box">
+
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('hr.visitor', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <div id="textbox">
+                                <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div class="col-xs-19" style="padding:0px">
+                                    <field name="visitor_state" widget="hr_attendance_kanban_presence_indicator"/>
+                                </div>
+                                <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="visitor_name"/>
+                                    </strong>
+                                </div>
+
+                            </div>
+                            <ul>
+                                <li t-if="record.visitor_name.raw_value"><field name="partner_id"/></li>
+                                <li t-if="record.visitor_name.raw_value"><field name="in_datetime"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+
+        <record id="visitor_graph_view" model="ir.ui.view">
+            <field name="name">hr.visitor.graph</field>
+            <field name="model">hr.visitor</field>
+            <field name="arch" type="xml">
+                <graph string="Visitor" type="bar">
+                    <field name="visitor_name"/>
+                    <field name="partner_id" operator="+" type='measure'/>
+                </graph>
+            </field>
+        </record>
+         <record model="ir.ui.view" id="hr_visitor_view_calendar">
+            <field name="model">hr.visitor</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <calendar string="Visitor" date_start="in_datetime" color="user_id">
+                     <field name="name"/>
+                        <field name="visitor_name"/>
+                        <field name="mobile_number"/>
+                        <field name="email"/>
+                        <field name="in_datetime"/>
+                        <field name="out_datetime"/>
+                        <field name="partner_id"/>
+                        <field name="department_id"/>
+                        <field name="company_id"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+
+                </calendar>
+            </field>
+        </record>
+
+       <record id="action_partner_form_all_visitor" model="ir.actions.act_window">
+            <field name="name">All Visitor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_customer":1}</field>
+           <field name="domain">[('visitor_check', '=', True)]</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="visitor_log_list_action">
+            <field name="name">Visitors Logs</field>
+            <field name="res_model">hr.visitor</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,calendar,graph</field>
+        </record>
+
+        <menuitem id="main_hr_visitor_process" web_icon="hr_visitor,static/description/icon.png" name="Visitors" groups="base.group_user,hr.group_hr_user"/>
+        <menuitem id="hr_visitor_process_menu"   name="Company Visitors"
+                  parent="main_hr_visitor_process"/>
+        <menuitem id="visitor_menu_logs" name="Visitors Logs"   parent="hr_visitor_process_menu"
+                  action="visitor_log_list_action"/>
+
+         <menuitem id="all_visitor_partner" name="All Visitors"   parent="hr_visitor_process_menu"
+                  action="action_partner_form_all_visitor"/>
+        <menuitem
+            id="hr.menu_open_view_employee_list_my"
+            action="hr.open_view_employee_list_my"
+            parent="hr.menu_hr_root"
+            sequence="3" groups="hr_visitor.visitor_employee"/>
+
+    </data>
+</odoo>

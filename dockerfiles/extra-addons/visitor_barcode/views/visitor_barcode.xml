@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="event_barcode_action_main_view_id" model="ir.actions.client">
+        <field name="name">Barcode Interface</field>
+        <field name="tag">even_barcode.scan_view</field>
+    </record>
+
+     <record id="hr_attendance_action_greeting_message" model="ir.actions.client">
+        <field name="name">Message</field>
+        <field name="tag">visitor_greeting_message</field>
+    </record>
+
+
+
+
+    <menuitem id="menu_visitor_barcode" name="Barcode Scanner"
+           web_icon="visitor_barcode,static/description/icon.png"
+            sequence="21"
+              action="event_barcode_action_main_view_id"  groups="hr_visitor.visitor_admin"/>
+
+</odoo>

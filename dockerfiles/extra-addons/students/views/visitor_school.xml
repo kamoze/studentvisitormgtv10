@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="visitor_class_form_view" model="ir.ui.view">
+            <field name="name">visitor.class.form</field>
+            <field name="model">visitor.class</field>
+            <field name="arch" type="xml">
+                <form string="Class Form">
+                        <group>
+                              <field name="name"/>
+
+                        </group>
+                </form>
+            </field>
+        </record>
+             <record id="visitor_class_tree_view" model="ir.ui.view">
+            <field name="name">visitor.class.tree</field>
+            <field name="model">visitor.class</field>
+            <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+              </tree>
+            </field>
+        </record>
+        <record id="visitor_school_form_view" model="ir.ui.view">
+            <field name="name">visitor.school.form</field>
+            <field name="model">visitor.school</field>
+            <field name="arch" type="xml">
+                <form string="School Form">
+                        <group>
+                              <field name="name"/>
+
+                        </group>
+                </form>
+            </field>
+           </record>
+             <record id="visitor_School_tree_view" model="ir.ui.view">
+            <field name="name">visitor.school.tree</field>
+            <field name="model">visitor.school</field>
+            <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+              </tree>
+            </field>
+        </record>
+        <record id="relationship_type_form" model="ir.ui.view">
+            <field name="name">relationship.type.form</field>
+            <field name="model">relationship.type</field>
+            <field name="arch" type="xml">
+                <form string="Relationship">
+                    <sheet>
+                        <group>
+                             <field name="name"/>
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+          <record id="relationship_type_tree" model="ir.ui.view">
+            <field name="name">relationship.type.tree</field>
+            <field name="model">relationship.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                  </tree>
+            </field>
+          </record>
+        <record id="action_type_relationship" model="ir.actions.act_window">
+            <field name="name">Relationship Type</field>
+            <field name="res_model">relationship.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="visitor_school_action">
+            <field name="name">School</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">visitor.school</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+           <record model="ir.actions.act_window" id="visitor_class_action">
+            <field name="name">Class</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">visitor.class</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="visitor_school_menu2" name="Configuration" sequence="1" parent="visitor_menu1"/>
+        <menuitem id="visitor_class_menu3" name="Class" action="visitor_school_action" parent="visitor_school_menu2" sequence="1"/>
+        <menuitem id="visitor_school_menu4" name="School" action="visitor_class_action" parent="visitor_school_menu2" sequence="2"/>
+        <menuitem id ="visitor_relative_type_menu5" parent = "visitor_school_menu2" sequence ="3" name ="Relationship Type" action="action_type_relationship"/>
+
+    </data>
+</odoo>

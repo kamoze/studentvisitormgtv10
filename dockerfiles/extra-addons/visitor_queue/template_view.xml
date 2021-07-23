@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_backend" name="visitor_queue assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/visitor_queue/static/src/js/queue_barcode.js"></script>
+
+        </xpath>
+    </template>
+</odoo>
